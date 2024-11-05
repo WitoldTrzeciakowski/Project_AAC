@@ -26,6 +26,22 @@ def read_graph_file(file_path):
     
     return graphs
 
+def investigate_adjacency_matrix_properties(graph):
+    type = 'graph'
+    directed = False
+    matrix = graph['adjacency_matrix']
+
+    for i in range (0, len(matrix), 1):
+        for j in range(0, i, 1):
+            if matrix[i][j] != matrix[j][i] :
+                directed = True
+            if matrix[i][j] > 1 or matrix[j][i] > 1 :
+                type='multigraph'
+    return {
+        "type": type,
+        "directed": directed
+    }
+
 file_path = 'example.txt'
 graph_data = read_graph_file(file_path)
 for i, graph in enumerate(graph_data):
@@ -35,4 +51,7 @@ for i, graph in enumerate(graph_data):
     for row in graph["adjacency_matrix"]:
         print(row)
     print("Additional Data:", graph["additional_data"])
+    graph_type = investigate_adjacency_matrix_properties(graph)
+    print('Type of the graph: ', graph_type['type'])
+    print('Is directed: ',graph_type['directed'])
     print()
