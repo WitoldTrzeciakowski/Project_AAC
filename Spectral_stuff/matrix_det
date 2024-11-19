@@ -14,6 +14,10 @@ def determinant_of_matrix(mat):
     sign = 1
     for f in range(n):
         temp = get_cofactor(mat, 0, f, n)
-        D += sign * mat[0][f] * determinant_of_matrix(temp, n - 1)
+        D += sign * mat[0][f] * determinant_of_matrix(temp)
         sign = -sign
     return D
+
+
+mat = [[1,2],[3,4]]
+print (determinant_of_matrix(mat))
