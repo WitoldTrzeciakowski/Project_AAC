@@ -21,6 +21,7 @@ def chromatic_index(graph):
 
 file_path = 'example.txt'
 graph_data = read_file.read_graph_file(file_path)
+informations_upon_graph = read_file.investigate_adjacency_matrix_properties(graph_data)
 
 for i, graph in enumerate(graph_data):
     num_edges, num_vertices = count_edges_vertices(graph)
