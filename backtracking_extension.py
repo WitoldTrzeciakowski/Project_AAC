@@ -114,5 +114,21 @@ graph2 = np.array([
     [0, 0, 0, 0]
 ])
 
+graph3 = np.array([
+    [0, 1, 1, 0],
+    [1 ,0, 1, 0],
+    [1 ,1, 0, 1],
+    [0 ,0, 1, 0],
+])
+
+graph4 = np.array([
+    [0, 1, 1, 0],
+    [0 ,0, 1, 0],
+    [0 ,0, 0, 0],
+    [0 ,0, 1, 0],
+])
+
 print("Minimum edges to add to make the graph Hamiltonian:", find_minimum_edges_to_hamiltonian(graph))
 print("Minimum edges to add to make the graph Hamiltonian:", find_minimum_edges_to_hamiltonian(graph2))
+print("Minimum edges to add to make the graph Hamiltonian:", find_minimum_edges_to_hamiltonian(graph3))
+print("Minimum edges to add to make the graph Hamiltonian:", find_minimum_edges_to_hamiltonian(graph4))
