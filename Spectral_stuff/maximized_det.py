@@ -14,7 +14,7 @@ def greedy_edge_addition(adj_matrix, n):
         current_eigenvalue = best_eigenvalue
         for i in range(len(adj_matrix)):
             for j in range(i + 1, len(adj_matrix)):
-                if adj_matrix[i][j] == 0:  
+                if adj_matrix[i][j] == 0 and adj_matrix[j][i] == 0:  
                     adj_matrix[i][j] = adj_matrix[j][i] = 1
                     new_eigenvalue = largest_eigenvalue(adj_matrix)
                     if new_eigenvalue > best_eigenvalue:
