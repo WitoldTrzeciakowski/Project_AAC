@@ -1,10 +1,21 @@
 import read_file
 
+def is_M_symetrical(M):
+    for i in range(len(M)):
+        for j in range(i + 1, len(M)):
+            if M[i][j] != M[j][i]:
+                return False
+    return True
+
+
 def count_edges_vertices(graph):
     num_vertices = graph["num_vertices"]
     adjacency_matrix = graph["adjacency_matrix"]
-    num_edges = int(sum(sum(row) for row in adjacency_matrix) / 2 )
-
+    if is_M_symetrical(adjacency_matrix):
+        num_edges = int(sum(sum(row) for row in adjacency_matrix) / 2 )
+    else:
+        num_edges = int(sum(sum(row) for row in adjacency_matrix))
+        
     return num_edges, num_vertices
 
 def chromatic_index(graph):
@@ -24,12 +35,12 @@ graph_data = read_file.read_graph_file(file_path)
 
 for i, graph in enumerate(graph_data):
     num_edges, num_vertices = count_edges_vertices(graph)
-    chromatic_index_1 , chromatic_index_2 = chromatic_index(graph)
+    #chromatic_index_1 , chromatic_index_2 = chromatic_index(graph)
     print(f"Size of Graph {i + 1}:")
     print("Number of vertices:", num_vertices)
     print("Number of edges:", num_edges)
-    if chromatic_index_2 == -1:
-        print(f"Chromatic index is at most {chromatic_index_1} and it is a multigraph")
-    else: 
-        print(f"Chromatic index is at most {chromatic_index_1} or {chromatic_index_2} \nFrom what i know checking which one is correct is NP-Complete <3")
+    # if chromatic_index_2 == -1:
+    #     print(f"Chromatic index is at most {chromatic_index_1} and it is a multigraph")
+    # else: 
+    #     print(f"Chromatic index is at most {chromatic_index_1} or {chromatic_index_2} \nFrom what i know checking which one is correct is NP-Complete <3")
     print()
