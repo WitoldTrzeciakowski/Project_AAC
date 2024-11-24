@@ -81,4 +81,3 @@ graph = np.array([
     [0, 0, 0, 0]
 ])
 
-print("Minimum edges to add to make the graph Hamiltonian:", find_minimum_edges_to_hamiltonian(graph))

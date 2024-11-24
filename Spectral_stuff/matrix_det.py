@@ -18,6 +18,3 @@ def determinant_of_matrix(mat):
         sign = -sign
     return D
 
-
-mat = [[1,2],[3,4]]
-print (determinant_of_matrix(mat))
