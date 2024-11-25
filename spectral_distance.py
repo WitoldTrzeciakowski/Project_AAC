@@ -1,26 +1,14 @@
+from matrix_det import determinant_of_matrix
 def compute_eigenvalues(matrix):
     """Compute eigenvalues of a square matrix."""
-    # Helper function to compute determinant of a matrix
-    def determinant(mat):
-        n = len(mat)
-        if n == 1:
-            return mat[0][0]
-        if n == 2:
-            return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]
-        
-        det = 0
-        for i in range(n):
-            # Minor of the matrix
-            minor = [row[:i] + row[i+1:] for row in mat[1:]]
-            det += ((-1) ** i) * mat[0][i] * determinant(minor)
-        return det
 
     # Find roots of the characteristic polynomial using a naive approach
     def characteristic_polynomial(matrix, lambda_val):
         n = len(matrix)
         identity = [[1 if i == j else 0 for j in range(n)] for i in range(n)]
         mat = [[matrix[i][j] - lambda_val * identity[i][j] for j in range(n)] for i in range(n)]
-        return determinant(mat)
+        print(determinant_of_matrix(mat))
+        return determinant_of_matrix(mat)
 
     # Compute eigenvalues by finding roots of the characteristic polynomial
     eigenvalues = []
