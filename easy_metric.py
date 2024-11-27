@@ -37,10 +37,11 @@ adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumera
 if len(adjacency_matrices) < 2:
     print("Error: At least two graphs are required for comparison.")
 else:
-    x, y = 1, 2 
-    
+    x = 1
     matrix1 = adjacency_matrices[f"M{x}"]
-    matrix2 = adjacency_matrices[f"M{y}"]
-    M3, EV_num = calculate_matrix_to_match(matrix1, matrix2)
-
-    print(f"The number of edges that we need to add or delete: {EV_num[0]} \nThe number of vertices that we need to add or delete: {EV_num[1]}" )
+    for y in range(1,len(adjacency_matrices) + 1):
+        matrix2 = adjacency_matrices[f"M{y}"]
+        M3, EV_num = calculate_matrix_to_match(matrix1, matrix2)
+        print(f"Distance between Graph{x} and Graph{y}:")
+        print(f"The number of edges that we need to add or delete: {EV_num[0]} \nThe number of vertices that we need to add or delete: {EV_num[1]}" )
+        print()
