@@ -1,12 +1,5 @@
 from read_file import read_graph_file
-
-def is_M_symetrical(M):
-    for i in range(len(M)):
-        for j in range(i + 1, len(M)):
-            if M[i][j] != M[j][i]:
-                return False
-    return True
-
+from graph_size import is_M_symetrical
 
 def are_isomorphic(M1, M2):
     if M1 == M2: 
