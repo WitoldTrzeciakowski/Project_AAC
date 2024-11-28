@@ -33,7 +33,7 @@ def make_graph(adjacency_matrix):
     return graph
 
 def investigate_adjacency_matrix_properties(graph):
-    type = 'graph'
+    type = 'simple graph'
     directed = False
     matrix = graph["adjacency_matrix"]
 

@@ -19,6 +19,7 @@ def add_edges_to_ensure_min_degree(adj_matrix, min_degree=2):
 
 
     return adj_matrix
+
 def is_hamiltonian_cycle(graph):
     n = len(graph)
     visited = [False] * n

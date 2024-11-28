@@ -1,4 +1,3 @@
-import read_file 
 
 def calculate_matrix_to_match(matrix1, matrix2):
     
@@ -28,24 +27,3 @@ def calculate_matrix_to_match(matrix1, matrix2):
     added_V = len(M_bigger) - len(M_smaller)
 
     return M3, (added_E, added_V)
-
-file_path = 'example.txt'
-graph_data = read_file.read_graph_file(file_path)
-
-print(graph_data)
-
-adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
-
-print(adjacency_matrices)
-
-if len(adjacency_matrices) < 2:
-    print("Error: At least two graphs are required for comparison.")
-else:
-    x = 1
-    matrix1 = adjacency_matrices[f"M{x}"]
-    for y in range(1,len(adjacency_matrices) + 1):
-        matrix2 = adjacency_matrices[f"M{y}"]
-        M3, EV_num = calculate_matrix_to_match(matrix1, matrix2)
-        print(f"Distance between Graph{x} and Graph{y}:")
-        print(f"The number of edges that we need to add or delete: {EV_num[0]} \nThe number of vertices that we need to add or delete: {EV_num[1]}" )
-        print()

@@ -38,3 +38,5 @@ def determinant_of_matrix(matrix, tol=1e-12):
     determinant = determinant_sign * diagonal_product
     return determinant
 
+
+
