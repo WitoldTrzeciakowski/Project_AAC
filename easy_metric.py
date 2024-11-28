@@ -32,7 +32,11 @@ def calculate_matrix_to_match(matrix1, matrix2):
 file_path = 'example.txt'
 graph_data = read_file.read_graph_file(file_path)
 
+print(graph_data)
+
 adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
+
+print(adjacency_matrices)
 
 if len(adjacency_matrices) < 2:
     print("Error: At least two graphs are required for comparison.")

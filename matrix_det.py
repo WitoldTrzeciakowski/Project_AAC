@@ -23,7 +23,7 @@ def determinant_of_matrix(matrix, tol=1e-12):
                 pivot = c[i, j]
                 pivot_ind = i
         if abs(pivot) < tol:
-            print(f"Matrix is singular or nearly singular at column {j}.")
+            #print(f"Matrix is singular or nearly singular at column {j}.")
             return 0  
         if pivot_ind != j:
             c[[j, pivot_ind]] = c[[pivot_ind, j]]   

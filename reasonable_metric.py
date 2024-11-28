@@ -4,25 +4,19 @@ from graph_size import is_M_symetrical
 def are_isomorphic(M1, M2):
     if M1 == M2: 
         return True
-    
     # wielkosc grafu 
     if len(M1) != len(M2): 
         return False
-    
     # degree sequence
     M1_degs = sorted([sum(row) for row in M1])
     M2_degs = sorted([sum(row) for row in M2]) 
     if M1_degs != M2_degs:
-        return False
-    
+        return False   
     # ilosc edge
     M1_edges = int(sum(M1_degs) / 2 )
     M2_edges = int(sum(M2_degs) / 2 )
     if M1_edges != M2_edges:
         return False
-
-
-    
     return True
 
 def reasonable_metric(M1, M2):
