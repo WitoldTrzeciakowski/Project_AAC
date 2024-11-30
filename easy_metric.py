@@ -1,4 +1,3 @@
-
 def calculate_matrix_to_match(matrix1, matrix2):
     
     if len(matrix1) < len(matrix2):

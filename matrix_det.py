@@ -38,5 +38,25 @@ def determinant_of_matrix(matrix, tol=1e-12):
     determinant = determinant_sign * diagonal_product
     return determinant
 
+import numpy as np
 
+def eigenvalues_of_matrix(matrix):
+    # Ensure the input is a numpy array
+    matrix = np.array(matrix, dtype=int)
+    
+    # Calculate eigenvalues using numpy's built-in function
+    eigenvalues = np.linalg.eigvals(matrix)
+    
+    # Round eigenvalues to 2 decimal points
+    rounded_eigenvalues = np.round(eigenvalues, 2)
+    
+    # Sort the rounded eigenvalues
+    sorted_eigenvalues = np.sort(rounded_eigenvalues)
+    
+    return sorted_eigenvalues
 
+# matrix1 = [[0, 1, 1, 0], [1, 0, 1, 1], [1, 1, 0, 0], [0, 1, 0, 0]]
+# matrix2 = [[0, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 0], [1, 1, 0, 0]]
+
+# print(eigenvalues_of_matrix(matrix1))
+# print(eigenvalues_of_matrix(matrix2))
