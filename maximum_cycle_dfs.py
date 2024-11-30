@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 def maximum_cycle_dfs(adjacency_matrix):
     paths = []
     paths_sorted = []
@@ -54,12 +56,10 @@ def maximum_cycle_dfs(adjacency_matrix):
     return paths
 
 def maximum_cycle_dfs_optimized(adjacency_matrix):
-    # Initialize variables
-    paths = set()  # Use a set to store unique cycles
+    paths = set()
     maximum_path_length = 0
     n = len(adjacency_matrix)
 
-    # Helper function for DFS
     def dfs(node, start_node, visited, path):
         nonlocal maximum_path_length
         
@@ -67,59 +67,55 @@ def maximum_cycle_dfs_optimized(adjacency_matrix):
         path.append(node)
 
         for neighbor in range(n):
-            if adjacency_matrix[node][neighbor] != 0:  # There is an edge
+            if adjacency_matrix[node][neighbor] != 0: 
                 if neighbor == start_node and len(path) > 2:
-                    # Cycle detected, check its length
                     cycle_length = len(path)
                     if cycle_length > maximum_path_length:
-                        # New maximum cycle length found, update and store cycle
                         maximum_path_length = cycle_length
-                        paths.clear()  # Clear the previous paths of shorter length
-                        paths.add(tuple(path))  # Add the cycle in a canonical form (tuple)
+                        paths.clear()
+                        paths.add(tuple(path))
                     elif cycle_length == maximum_path_length:
-                        paths.add(tuple(path))  # Add this cycle to the set
+                        paths.add(tuple(path))
 
                 elif not visited[neighbor]:
-                    # Continue DFS if not visited
                     dfs(neighbor, start_node, visited, path)
 
-        # Backtrack
         visited[node] = False
         path.pop()
 
-    # Iterate over all nodes and start DFS from each node
     for starting_point in range(n):
-        visited = [False] * n  # Track visited nodes
+        visited = [False] * n 
         dfs(starting_point, starting_point, visited, [])
 
     return [list(cycle) for cycle in paths]
-def find_max_cycles(adj_matrix):
-    """
-    Find the maximum cycle length and the number of such cycles in a graph using dynamic programming.
-    :param adj_matrix: List of lists, adjacency matrix representation of the graph
-    :return: Tuple (max_cycle_length, num_max_cycles)
-    """
-    from functools import lru_cache
 
-    n = len(adj_matrix)  # Number of nodes
+def sanitize_cycles(cycles):
+    seen = set()
+    result = []
+    
+    for cycle in cycles:
+        sorted_tuple = tuple(sorted(cycle))
+        if sorted_tuple not in seen:
+            seen.add(sorted_tuple)
+            result.append(cycle)
+    
+    return result
+            
+
+def find_max_cycles(adj_matrix):
+
+    n = len(adj_matrix)
 
     @lru_cache(None)
     def dp(node, visited_mask, start):
-        """
-        Recursive function with memoization.
-        :param node: Current node
-        :param visited_mask: Bitmask of visited nodes
-        :param start: Starting node for cycle detection
-        :return: Tuple (max_cycle_length, num_max_cycles)
-        """
         max_length, count = 0, 0
 
-        for neighbor in range(n):  # Iterate over all possible neighbors
-            if adj_matrix[node][neighbor] > 0:  # Edge exists
-                if neighbor == start:  # Cycle found
+        for neighbor in range(n):  
+            if adj_matrix[node][neighbor] > 0:
+                if neighbor == start: 
                     max_length = max(max_length, 1)
                     count += 1
-                elif not (visited_mask & (1 << neighbor)):  # Neighbor not visited
+                elif not (visited_mask & (1 << neighbor)): 
                     next_length, next_count = dp(
                         neighbor, visited_mask | (1 << neighbor), start
                     )
@@ -130,12 +126,11 @@ def find_max_cycles(adj_matrix):
 
         return max_length, count
 
-    # Main logic
     max_length = 0
     max_count = 0
 
-    for start in range(n):  # Start from each node
-        visited_mask = 1 << start  # Only the starting node is visited
+    for start in range(n): 
+        visited_mask = 1 << start
         cycle_length, cycle_count = dp(start, visited_mask, start)
 
         if cycle_length > max_length:
@@ -146,17 +141,8 @@ def find_max_cycles(adj_matrix):
     return max_length, max_count
 
 def matrix_exponentiation_cycle_detection(adj_matrix, n):
-    """
-    Detects cycles in a graph using matrix exponentiation.
-    
-    :param adj_matrix: List of lists, representing the adjacency matrix of the graph.
-    :param n: Integer, the number of nodes in the graph.
-    :return: Boolean, True if a cycle exists, otherwise False.
-    """
+
     def multiply_matrices(A, B, size):
-        """
-        Multiplies two matrices A and B of given size.
-        """
         result = [[0] * size for _ in range(size)]
         for i in range(size):
             for j in range(size):
@@ -165,10 +151,7 @@ def matrix_exponentiation_cycle_detection(adj_matrix, n):
         return result
 
     def matrix_power(matrix, power, size):
-        """
-        Computes the power of a matrix using repeated squaring.
-        """
-        result = [[1 if i == j else 0 for j in range(size)] for i in range(size)]  # Identity matrix
+        result = [[1 if i == j else 0 for j in range(size)] for i in range(size)]
         base = matrix
         while power:
             if power % 2 == 1:
@@ -177,21 +160,46 @@ def matrix_exponentiation_cycle_detection(adj_matrix, n):
             power //= 2
         return result
 
-    # Compute A^n
     powered_matrix = matrix_power(adj_matrix, n, n)
 
-    # Check diagonal elements in A^n
-    max_length = 0
+    max_length_of_cycle = 0
     number_of_cycles = 0
     for i in range(n):
         if powered_matrix[i][i] > 0:
-            if max_length < powered_matrix[i][i]:
+            if max_length_of_cycle < powered_matrix[i][i]:
                 number_of_cycles = 1
-                max_length = powered_matrix[i][i]
-            if max_length == powered_matrix[i][i]:
+                max_length_of_cycle = powered_matrix[i][i]
+            if max_length_of_cycle == powered_matrix[i][i]:
                 number_of_cycles+=1
 
-    return max_len, number_of_cycles  # No cycles detected
+    return max_length_of_cycle, number_of_cycles
+
+def find_max_cycle_length_and_count(adj_matrix):
+    n = len(adj_matrix)  # Number of nodes
+    max_cycle_length = 0
+    cycle_count = 0
+
+    def dfs(node, start, visited, path_length):
+        nonlocal max_cycle_length, cycle_count
+        visited[node] = True
+
+        for neighbor in range(n):
+            if adj_matrix[node][neighbor] == 1:  # There's an edge
+                if neighbor == start and path_length > 2:  # Cycle found
+                    max_cycle_length = max(max_cycle_length, path_length)
+                    cycle_count += 1  # Increment the cycle count
+                elif not visited[neighbor]:  # Continue DFS
+                    dfs(neighbor, start, visited, path_length + 1)
+
+        visited[node] = False  # Backtrack
+
+    # Start DFS from every node
+    for i in range(n):
+        visited = [False] * n
+        dfs(i, i, visited, 1)
+
+    return max_cycle_length, cycle_count
+
 
 graph = [
     [0, 1, 1, 0, 0, 0],
@@ -204,9 +212,11 @@ graph = [
 
 paths = maximum_cycle_dfs(graph)
 paths2 = maximum_cycle_dfs_optimized(graph)
+paths_sanitized = sanitize_cycles(paths2)
 max_len, max_count = find_max_cycles(graph)
 max_len_2, count = matrix_exponentiation_cycle_detection(graph, len(graph))
 print(paths)
-print(paths2)
+print(paths_sanitized)
 print(max_len, max_count)
 print(max_len_2, count)
+print(find_max_cycle_length_and_count(graph))
