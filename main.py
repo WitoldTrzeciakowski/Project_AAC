@@ -93,7 +93,7 @@ else:
 
 ############ Hamilton Paths and cycles #############
 
-# Hamilton Paths and Cycles Section
+
 adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
 indeks = 1
 for adjecency_matrix in adjacency_matrices.values():
@@ -103,8 +103,8 @@ for adjecency_matrix in adjacency_matrices.values():
     print("Adjacency Matrix:")
     for row in adjecency_matrix:
         print(row)
-    
-    # Call the function to check Hamiltonian path/cycle
-    interface_hamilton_cycle.do_check_on_graph(adjecency_matrix, True)
+    directed = read_file.investigate_adjacency_matrix_properties(graph)["directed"]
+    print(f"is the graph directed: {directed}")
+    interface_hamilton_cycle.do_check_on_graph(adjecency_matrix, directed)
 
 
