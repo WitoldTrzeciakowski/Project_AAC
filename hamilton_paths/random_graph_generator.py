@@ -1,44 +1,45 @@
 import numpy as np
 import random
 
-def generate_random_graph(directed = False):
+def generate_random_graph(directed=False):
     """
-    Generuje losowy graf skierowany lub nieskierowany w formie macierzy sąsiedztwa.
+    Generates a random directed or undirected connected graph as an adjacency matrix.
 
-    Parametry:
-        num_vertices: int - liczba wierzchołków w grafie.
-        density: float - gęstość grafu (wartość z przedziału [0, 1]), im większa, tym więcej krawędzi.
-        directed: bool - True, jeśli graf ma być skierowany, False, jeśli nieskierowany.
+    Parameters:
+        directed (bool): True if the graph is directed, False if undirected.
 
-    Zwraca:
-        adj_matrix: numpy.ndarray - macierz sąsiedztwa wygenerowanego grafu.
+    Returns:
+        adj_matrix (numpy.ndarray): Adjacency matrix of the generated graph.
     """
-    num_vertices = random.randint(1,30)
-    density =random.random()  
-    # Upewnij się, że gęstość jest w poprawnym zakresie
-    if not (0 <= density <= 1):
-        raise ValueError("Density must be between 0 and 1.")
+    num_vertices = random.randint(5, 30)  # Random number of vertices between 5 and 30
+    density = random.uniform(0.1, 0.9)   # Random density between 0.1 and 0.9
 
-    # Inicjalizacja pustej macierzy sąsiedztwa
+    # Ensure a spanning tree is created for connectivity
     adj_matrix = np.zeros((num_vertices, num_vertices), dtype=int)
 
-    # Przechodzimy po parach wierzchołków i dodajemy krawędzie z prawdopodobieństwem zależnym od gęstości
+    # Create a spanning tree
+    vertices = list(range(num_vertices))
+    random.shuffle(vertices)
+    for i in range(1, num_vertices):
+        u = vertices[i]
+        v = random.choice(vertices[:i])  # Connect the current vertex to one of the previous vertices
+        adj_matrix[u][v] = 1
+        if not directed:
+            adj_matrix[v][u] = 1
+
+    # Add additional edges based on density
     for i in range(num_vertices):
-        for j in range(num_vertices):
-            if i != j and random.random() < density:
-                adj_matrix[i, j] = 1
-                if not directed:
-                    adj_matrix[j, i] = 1  # Nieskierowana krawędź
+        for j in range(i + 1, num_vertices):
+            if directed or i != j:  # Avoid self-loops
+                if random.random() < density and adj_matrix[i][j] == 0:
+                    adj_matrix[i][j] = 1
+                    if not directed:
+                        adj_matrix[j][i] = 1
 
     return adj_matrix
 
-
-if __name__ == "__main__":
-
-    print("Losowy graf nieskierowany:")
-    undirected_graph = generate_random_graph()
-    print(undirected_graph)
-
-    print("\nLosowy graf skierowany:")
-    directed_graph = generate_random_graph()
-    print(directed_graph)
+# Example usage
+graph = generate_random_graph(directed=False)
+print("Generated Adjacency Matrix:")
+for row in graph:
+    print(row)
