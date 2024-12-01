@@ -7,7 +7,7 @@ import spectral_distance
 print(" Algorithms and Computability Project \n Aleksandra Wieczorek, Witold Trzeciakowski, Szymon Kupisz \n")
 
 ######################### READING DATA #########################
-print("     Reading Graphs from the file \n")
+print("...reading graphs from the file...\n")
 
 #file_path = input("Enter file path: ")
 file_path = "example.txt"
@@ -31,6 +31,7 @@ graph_data = read_file.read_graph_file(file_path)
 
 print("     Size of the graph\n")
 print("Number of edges and number of verices \n")
+print("NOTE:: One undirected edge is counted as two directed edges ")
 
 for i, graph in enumerate(graph_data):
     print(f"Size of Graph {i + 1}:")
@@ -44,7 +45,7 @@ for i, graph in enumerate(graph_data):
 
 ############## RESONABLE METRIC #############################
 
-print("     Reasonable Metric\n")
+print("     Reasonable Metric - Matrix comparision \n")
 print("Number of operation that need to be done for matrix representing the graph to be the same")
 print("NOTE:: In this metric we count one undirected edge as two directed edges for making the metric working for all types of graphs \n")
 
@@ -73,8 +74,8 @@ else:
         print()
 
 
-print("     Reasonable Metric\n")
-print("Isomorphic graphs have the same spectral distance, \nHowever when the spectra are the same it doesn't mean taht the graphs are isomorphic and more calucaltions needs to be done ")
+print("     Reasonable Metric - Spectra \n")
+print("Isomorphic graphs have the same spectral distance, \nHowever when the spectra are the same it doesn't mean taht the graphs are isomorphic and more calucaltions needs to be done \n")
 
 if len(adjacency_matrices) < 2:
     print("Error: At least two graphs are required for comparison.")
@@ -87,8 +88,3 @@ else:
             print(f"Graph M{x} and Graph M{y} may be isomorphic (spectra match).")
         else:
             print(f"Graph M{x} and Graph M{y} are not isomorphic (spectra differ).")
-
-
-
-## TODO::   - wyswietlac maciez obok metryki zbey bylo widac zi zeby nie trzeba bylo przewijac 
-#           - edge raczej dwa razy liczyc w size zeby bylo tak samo i tej czesci 

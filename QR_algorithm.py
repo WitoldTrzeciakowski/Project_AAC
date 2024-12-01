@@ -16,7 +16,7 @@ def identity_matrix(size):
     """
     return [[1 if i == j else 0 for j in range(size)] for i in range(size)]
 
-def gram_schmidt(A):
+def gram_schmidt(A,tolerance=1e-10):
     """
     Perform the Gram-Schmidt process to obtain Q and R matrices.
     """
@@ -29,9 +29,14 @@ def gram_schmidt(A):
         for i in range(j):
             R[i][j] = sum(Q[k][i] * A[k][j] for k in range(n))
             v = [v[k] - R[i][j] * Q[k][i] for k in range(n)]
-        R[j][j] = sum(v[k] * 2 for k in range(n)) * 0.5
-        for k in range(n):
-            Q[k][j] = v[k] / R[j][j]
+        R[j][j] = sum(v[k] ** 2 for k in range(n)) ** 0.5
+        if abs(R[j][j]) > tolerance:
+            for k in range(n):
+                Q[k][j] = v[k] / R[j][j]
+        else:
+            R[j][j] = 0
+            for k in range(n):
+                Q[k][j] = 0
     
     return Q, R
 
@@ -42,10 +47,11 @@ def qr_algorithm(matrix, max_iterations=1000, tolerance=1e-10):
     n = len(matrix)
     A = [row[:] for row in matrix]  # Make a copy of the matrix
     for _ in range(max_iterations):
-        Q, R = gram_schmidt(A)
+        Q, R = gram_schmidt(A,tolerance)
         A_next = matrix_multiply(R, Q)
         if all(abs(A_next[i][j] - A[i][j]) < tolerance for i in range(n) for j in range(n)):
             break
         A = A_next
-    return [A[i][i] for i in range(n)]  # Eigenvalues are on the diagonal of A
+    return [round(A[i][i],2) for i in range(n)]  # Eigenvalues are on the diagonal of A
+
 
