@@ -1,4 +1,4 @@
-from egienvalue import calculate_largest_eigenvalue  # Correct module name assumed
+from Spectral_stuff.egienvalue import calculate_largest_eigenvalue  # Correct module name assumed
 
 
 def copy_matrix(matrix):

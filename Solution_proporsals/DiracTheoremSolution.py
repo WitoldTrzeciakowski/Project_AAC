@@ -1,65 +1,90 @@
 def degree(adj_matrix, v, directed=False):
     if directed:
-        out_deg = sum(adj_matrix[v]) 
-        in_deg = sum(row[v] for row in adj_matrix)  
+        out_deg = sum(adj_matrix[v])  # Out-degree
+        in_deg = sum(row[v] for row in adj_matrix)  # In-degree
         return out_deg, in_deg
-    return sum(adj_matrix[v])
+    return sum(adj_matrix[v])  # Degree for undirected graph
+
 
 def add_edge(adj_matrix, u, v, directed=False):
     adj_matrix[u][v] = 1
     if not directed:
         adj_matrix[v][u] = 1
 
+
 def is_hamiltonian_by_dirac(adj_matrix, directed=False):
+    """
+    Check if the graph satisfies Dirac's theorem.
+    Dirac's theorem states that for a simple graph with n ≥ 3 vertices, 
+    if each vertex has degree at least n / 2, the graph is Hamiltonian.
+
+    Parameters:
+        adj_matrix (list[list[int]]): Adjacency matrix.
+        directed (bool): Whether the graph is directed.
+
+    Returns:
+        bool: True if the graph satisfies Dirac's theorem, False otherwise.
+    """
     n = len(adj_matrix)
     if n < 3:
-        return False
+        return False  # Dirac's theorem does not apply
 
     for v in range(n):
-        if degree(adj_matrix, v, directed=directed) < n / 2:
-            return False
+        if directed:
+            out_deg, in_deg = degree(adj_matrix, v, directed=True)
+            if min(out_deg, in_deg) < n / 2:  # Ensure both out-degree and in-degree are checked
+                return False
+        else:
+            if degree(adj_matrix, v, directed=False) < n / 2:  # Degree for undirected
+                return False
     return True
+
 
 def add_minimal_edges_by_dirac(adj_matrix, directed=False):
     """
     Add the minimal number of edges to satisfy Dirac's theorem.
+
+    Parameters:
+        adj_matrix (list[list[int]]): Adjacency matrix of the graph.
+        directed (bool): Whether the graph is directed.
+
+    Returns:
+        list[list[int]]: Updated adjacency matrix.
     """
     n = len(adj_matrix)
     if n < 3:
         return adj_matrix  # Dirac's theorem doesn't apply
 
     for u in range(n):
-        for v in range(u + 1, n):
-            if adj_matrix[u][v] == 0:  # If u and v are not connected
-                if degree(adj_matrix, u, directed=directed) < n / 2 or degree(adj_matrix, v, directed=directed) < n / 2:
-                    add_edge(adj_matrix, u, v, directed=directed)
-                    if is_hamiltonian_by_dirac(adj_matrix, directed=directed):
-                        return adj_matrix
+        for v in range(n):
+            if u != v and adj_matrix[u][v] == 0:  # No edge between u and v
+                if directed:
+                    out_deg, in_deg = degree(adj_matrix, u, directed=True)
+                    if out_deg < n / 2 or degree(adj_matrix, v, directed=True)[1] < n / 2:
+                        add_edge(adj_matrix, u, v, directed=True)
+                else:
+                    if degree(adj_matrix, u, directed=False) < n / 2 or degree(adj_matrix, v, directed=False) < n / 2:
+                        add_edge(adj_matrix, u, v, directed=False)
 
-    return adj_matrix  # Return the updated graph
+    return adj_matrix
+
 
 if __name__ == "__main__":
     # Example Undirected Graph
     adj_matrix_undirected = [
-        [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+        [0, 1, 0, 0, 0, 0, 0],
+        [1, 0, 1, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 1, 0, 1],
+        [0, 0, 0, 0, 0, 1, 0],
     ]
 
     print("Initial Undirected Graph satisfies Dirac:", is_hamiltonian_by_dirac(adj_matrix_undirected, directed=False))
+    
     updated_matrix_undirected = add_minimal_edges_by_dirac(adj_matrix_undirected, directed=False)
+    
     print("Updated Undirected Graph satisfies Dirac:", is_hamiltonian_by_dirac(updated_matrix_undirected, directed=False))
     print("Updated Undirected Adjacency Matrix:")
     for row in updated_matrix_undirected:

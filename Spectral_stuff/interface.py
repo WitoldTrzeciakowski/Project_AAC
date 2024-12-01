@@ -1,6 +1,6 @@
-from egienvalue import calculate_largest_eigenvalue
-from graph_checks import is_k2_join_kn4_plus_2k1, generate_k2_join_kn4_plus_2k1,identify_graph
-from maximized_det import greedy_edge_addition
+from Spectral_stuff.egienvalue import calculate_largest_eigenvalue
+from Spectral_stuff.graph_checks import is_k2_join_kn4_plus_2k1, generate_k2_join_kn4_plus_2k1,identify_graph
+from Spectral_stuff.maximized_det import greedy_edge_addition
 
 
 def add_edges_to_ensure_min_degree(adj_matrix, min_degree=2):
@@ -92,7 +92,6 @@ def spectral_extension(graph):
         while calculate_largest_eigenvalue(graph) <= size - 3:
             iterations += 1
             graph = greedy_edge_addition(graph, 1)
-            print(calculate_largest_eigenvalue(graph))
             if iterations > size*size:
                 break
 
@@ -115,38 +114,26 @@ def spectral_extension(graph):
     exception_graph = generate_k2_join_kn4_plus_2k1(size)
     iterations=0
     while (calculate_largest_eigenvalue(graph) < calculate_largest_eigenvalue(exception_graph) \
-            or is_k2_join_kn4_plus_2k1(graph))\
-            and (calculate_largest_eigenvalue(graph) <= size - 3 or identify_graph(graph) in
-            {"K1 ∨ (Kn−3 + 2K1)", "K2 ∨ 4K1", "K1 ∨ (K1,3 + K1)"}):
+            or is_k2_join_kn4_plus_2k1(graph)):
         iterations+=1
         graph = greedy_edge_addition(graph,1)
     for row in graph:
         print (row)
     print(iterations)
-    print(is_hamiltonian_cycle(graph))
+    return graph
 
-spectral_extension(adj_matrix)
-small_graph = [
-    [0, 1, 0, 0, 0],
-    [1, 0, 1, 0, 0],
-    [0, 1, 0, 1, 0],
-    [0, 0, 1, 0, 1],
-    [0, 0, 0, 1, 0],
-]
-spectral_extension(small_graph)
-adj_matrix_test_10 = [
-    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [1, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-    [1, 1, 0, 1, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 1, 0, 1, 1, 0, 0],
-    [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
-    [0, 0, 0, 0, 0, 1, 1, 0, 1, 1],
-    [0, 0, 0, 0, 0, 0, 1, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 0]
-]
-spectral_extension(adj_matrix_test_10)
+def check_spectral_theorems(graph):
+    size = len(graph)
+    if calculate_largest_eigenvalue(graph) <= size - 3:
+        exception = identify_graph(graph)
+        if exception not in {"K1 ∨ (Kn−3 + 2K1)", "K2 ∨ 4K1", "K1 ∨ (K1,3 + K1)"}:
+            return True
+    exception_graph = generate_k2_join_kn4_plus_2k1(size)
+    if (calculate_largest_eigenvalue(graph) >= calculate_largest_eigenvalue(exception_graph) \
+    and not is_k2_join_kn4_plus_2k1(graph)):
+        return True
+    return False
+
 
 
 

@@ -2,6 +2,7 @@ import read_file
 import graph_size
 import easy_metric
 import spectral_distance
+import interface_hamilton_cycle
 #import Spectral_stuff.interface
 
 print(" Algorithms and Computability Project \n Aleksandra Wieczorek, Witold Trzeciakowski, Szymon Kupisz \n")
@@ -88,3 +89,22 @@ else:
             print(f"Graph M{x} and Graph M{y} may be isomorphic (spectra match).")
         else:
             print(f"Graph M{x} and Graph M{y} are not isomorphic (spectra differ).")
+
+
+############ Hamilton Paths and cycles #############
+
+# Hamilton Paths and Cycles Section
+adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
+indeks = 1
+for adjecency_matrix in adjacency_matrices.values():
+    print(f"GRAF NUMER {indeks}")
+    indeks += 1
+    
+    print("Adjacency Matrix:")
+    for row in adjecency_matrix:
+        print(row)
+    
+    # Call the function to check Hamiltonian path/cycle
+    interface_hamilton_cycle.do_check_on_graph(adjecency_matrix, True)
+
+
