@@ -6,6 +6,7 @@ import hamilton_paths.adding_edges_stack
 import backtracking_extension
 import hamilton_paths.heuristic_number_hamiltons
 import hamilton_paths.list_hamiltons
+import maximum_cycle_dfs
 def do_check_on_graph(graph, isDirected):
 
 
@@ -28,24 +29,25 @@ def do_check_on_graph(graph, isDirected):
         updated_matrix = Solution_proporsals.DiracTheoremSolution.add_minimal_edges_by_dirac(graph, isDirected)
         print("exact solution to number of cycles problem")
         print(len(hamilton_paths.list_hamiltons.find_all_longest_cycles(updated_matrix)))
-        print("Approximate solution:")
+        print("Approximate solution - Monte Carlo:")
         print(hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles(updated_matrix))
-
+        print("Approximate Longest cycle solution")
+        print(maximum_cycle_dfs.find_max_cycle_length_and_count(graph))
         for row in updated_matrix:
             print(row)
+
+
         print("Spectral Theorem Solution")
         updated_matrix=Spectral_stuff.interface.spectral_extension(graph)
-
-
-
         if updated_matrix is not None:
             for row in updated_matrix:
                 print(row)
-
             print("exact solution to number of cycles problem")
             print(len(hamilton_paths.list_hamiltons.find_all_longest_cycles(updated_matrix)))
-            print("Approximate solution:")
+            print("Approximate solution - Monte Carlo:")
             print(hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles(updated_matrix))
+            print("Approximate Longest cycle solution")
+            print(maximum_cycle_dfs.find_max_cycle_length_and_count(updated_matrix))
         else:
             print("Spectral Solution couldnt be applied")
 
@@ -57,26 +59,31 @@ def do_check_on_graph(graph, isDirected):
             print(row)
         print("exact solution to number of cycles problem")
         print(len(hamilton_paths.list_hamiltons.find_all_longest_cycles(updated_matrix)))
-        print("Approximate solution:")
+        print("Approximate solution - Monte Carlo:")
         print(hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles(updated_matrix))
+        print("Approximate Longest cycle solution")
+        print(maximum_cycle_dfs.find_max_cycle_length_and_count(updated_matrix))
 
         print("Exact solution")
         number , updated_matrix = backtracking_extension.find_minimum_edges_to_hamiltonian(graph)
-
         print("exact solution to number of cycles problem")
         print(len(hamilton_paths.list_hamiltons.find_all_longest_cycles(updated_matrix)))
-        print("Approximate solution:")
+        print("Approximate solution - Monte Carlo:")
         print(hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles(updated_matrix))
-
+        print("Approximate Longest cycle solution")
+        print(maximum_cycle_dfs.find_max_cycle_length_and_count(updated_matrix))
         for row in updated_matrix:
             print(row)
+
     #if innitial graph is hamiltonian say how many paths
     if  (backtrack or spectral or dirac):
         print("----- Number Of Hamilton cycles ----")
         print("exact solution to number of cycles problem")
         print(len(hamilton_paths.list_hamiltons.find_all_longest_cycles(graph)))
-        print("Approximate solution:")
+        print("Approximate solution - Monte Carlo:")
         print(hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles(graph))
+        print(maximum_cycle_dfs.find_max_cycle_length_and_count(graph))
+    print("\n\n\n\n")
 
 
 
