@@ -3,6 +3,7 @@ import graph_size
 import easy_metric
 import spectral_distance
 import interface_hamilton_cycle
+import maximum_cycle
 #import Spectral_stuff.interface
 
 print(" Algorithms and Computability Project \n Aleksandra Wieczorek, Witold Trzeciakowski, Szymon Kupisz \n")
@@ -89,6 +90,28 @@ else:
             print(f"Graph M{x} and Graph M{y} may be isomorphic (spectra match).")
         else:
             print(f"Graph M{x} and Graph M{y} are not isomorphic (spectra differ).")
+
+
+############ Maximum cycle in a graph and the number of such cycles ###################
+
+    print("------ Maximum cycles -------")
+    print("NOTE: the heuristic solution is applicable only to the cyclic graphs. In case of the acyclic graphs, the results can be far from the exact ones")
+    print("Exact solution using the DFS algorithm")
+    paths = maximum_cycle.maximum_cycle_dfs_optimized(graph)
+    print("Maximum cycle length:")
+    if len(paths) == 0:
+        print(0)
+    else:
+        print(len(paths[0]))
+    print("Number of maximum cycles:")
+    print(len(paths))
+    print("Approximate solution with the use of matrix exponentiation:")
+    max_length_heuristic, number_of_paths_heuristic = maximum_cycle.longest_cycle_length(graph)
+    print("Maximum cycle length:")
+    print(max_length_heuristic)
+    print("Number of maximum cycles:")
+    print(number_of_paths_heuristic)
+
 
 
 ############ Hamilton Paths and cycles #############
