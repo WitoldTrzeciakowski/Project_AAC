@@ -1,6 +1,3 @@
-
-from functools import lru_cache
-
 def maximum_cycle_dfs_optimized(adjacency_matrix):
     paths = set()
     maximum_path_length = 0
@@ -35,6 +32,7 @@ def maximum_cycle_dfs_optimized(adjacency_matrix):
 
     return [list(cycle) for cycle in paths]
 
+
 def sanitize_cycles(cycles):
     seen = set()
     result = []
@@ -46,119 +44,50 @@ def sanitize_cycles(cycles):
             result.append(cycle)
     
     return result
-            
-def find_max_cycles_with_paths(adj_matrix):
+
+def longest_cycle_length(adj_matrix):
+    def matrix_mult(A, B):
+        """Multiplies two matrices A and B."""
+        n = len(A)
+        result = [[0] * n for _ in range(n)]
+        for i in range(n):
+            for j in range(n):
+                result[i][j] = sum(A[i][k] * B[k][j] for k in range(n))
+        return result
+
+    def matrix_power(A, k):
+        """Exponentiates matrix A to the power of k."""
+        n = len(A)
+        result = [[1 if i == j else 0 for j in range(n)] for i in range(n)]  # Identity matrix
+        base = A
+        while k > 0:
+            if k % 2 == 1:
+                result = matrix_mult(result, base)
+            base = matrix_mult(base, base)
+            k //= 2
+        return result
+
     n = len(adj_matrix)
+    longest_cycle = 0
 
-    @lru_cache(None)
-    def dp(node, visited_mask, start):
-        max_length, count = 0, 0
-        all_paths = []
+    # Check powers from 1 to n
 
-        for neighbor in range(n):
-            if adj_matrix[node][neighbor] > 0:
-                if neighbor == start: 
-                    # Found a cycle
-                    max_length = max(max_length, 1)
-                    count += 1
-                    all_paths.append([node, neighbor])  # Cycle path
-                elif not (visited_mask & (1 << neighbor)):
-                    # Continue DFS to find more cycles
-                    next_length, next_count, next_paths = dp(
-                        neighbor, visited_mask | (1 << neighbor), start
-                    )
-                    if next_length + 1 > max_length:
-                        max_length = next_length + 1
-                        count = next_count
-                        all_paths = [[node] + path for path in next_paths]
-                    elif next_length + 1 == max_length:
-                        count += next_count
-                        all_paths.extend([[node] + path for path in next_paths])
+    power_matrix = matrix_power(adj_matrix, n)
+    max_length_of_cycle = 0
+    number_of_cycles = 0
+    for i in range(n):
+        if power_matrix[i][i] > 0:
+            if max_length_of_cycle < power_matrix[i][i]:
+                number_of_cycles = 1
+                max_length_of_cycle = power_matrix[i][i]
+            if max_length_of_cycle == power_matrix[i][i]:
+                number_of_cycles+=1
 
-        return max_length, count, all_paths
+    for k in range(1, n+1):
+        power_matrix = matrix_power(adj_matrix, k)
+        total_cycles = sum(power_matrix[i][i] for i in range(len(adj_matrix)))
+        total_cycles //=(2*k)
+        if total_cycles > 0:
+            longest_cycle = k
 
-    max_length = 0
-    max_count = 0
-    max_cycles = []
-
-    for start in range(n):
-        visited_mask = 1 << start
-        cycle_length, cycle_count, cycles = dp(start, visited_mask, start)
-
-        if cycle_length > max_length:
-            max_length = cycle_length
-            max_count = cycle_count
-            max_cycles = cycles
-        elif cycle_length == max_length:
-            max_count += cycle_count
-            max_cycles.extend(cycles)
-
-    # Filter cycles to ensure they are unique (in case of duplicates)
-    unique_cycles = []
-    unique_length = 0
-    seen = set()
-    for cycle in max_cycles:
-        # Normalize cycle (rotate to smallest starting point and make tuple for hashing)
-        min_index = cycle.index(min(cycle))
-        normalized_cycle = tuple(cycle[min_index:] + cycle[:min_index])
-        if normalized_cycle not in seen:
-            if len(cycle) == unique_length:
-                seen.add(normalized_cycle)
-                unique_cycles.append(cycle)
-            if len(cycle) > unique_length:
-                unique_length = len(cycle)
-                seen.clear()
-                seen.add(normalized_cycle)
-                while len(unique_cycles) > 0:
-                    unique_cycles.pop()
-                unique_cycles.append(cycle)
-
-    return max_length, unique_cycles
-
-
-def sanitize_cycles_dp(cycles):
-    seen = set()
-    result = []
-    
-    for cycle in cycles:
-        cycle_operand = cycle.copy()
-        cycle_operand.pop()
-        sorted_tuple = tuple(sorted(cycle_operand))
-        if sorted_tuple not in seen:
-            seen.add(sorted_tuple)
-            result.append(cycle_operand)
-    
-    return result
-
-graph1 = [
-    [0, 1, 1, 0],
-    [1, 0, 1, 1],
-    [1, 1, 0, 1],
-    [0, 1, 1, 0]
-]
-
-graph2 = [
-    [0, 1, 1, 0, 0, 0],
-    [1, 0, 1, 1, 1, 0],
-    [1, 1, 0, 1, 0, 1],
-    [0, 1, 1, 0, 0, 0],
-    [0, 1, 0, 0, 0, 1],
-    [0, 0, 1, 0, 1, 0],
-]
-
-
-adj_matrix = [
-    [0, 1, 0, 0, 1], 
-    [1, 0, 1, 0, 0],
-    [0, 1, 0, 1, 0],
-    [0, 0, 1, 0, 1],
-    [1, 0, 0, 1, 0],
-]
-
-dfs_paths = maximum_cycle_dfs_optimized(graph2)
-paths_sanitized = sanitize_cycles(dfs_paths)
-print(f"Maximum Cycle Length (DFS): {len(paths_sanitized[0])}, Count: {len(paths_sanitized)}")
-
-max_len_dp, max_cycles_dp = find_max_cycles_with_paths(graph2)
-sanitized_dp_cycles = sanitize_cycles_dp(max_cycles_dp)
-print(f"Maximum Cycle Length (Dynamic Programming): {max_len_dp}, Count: {len(sanitized_dp_cycles)}")
+    return longest_cycle, number_of_cycles
