@@ -32,4 +32,4 @@ adj_matrix = [
 ]
 
 estimated_cycles = approximate_hamiltonian_cycles(adj_matrix, iterations=100000)
-print(f"Przybliżona liczba cykli Hamiltona: {estimated_cycles:.2f}")
+print(f"Przybliżona liczba cykli Hamiltona: {round(estimated_cycles)}")

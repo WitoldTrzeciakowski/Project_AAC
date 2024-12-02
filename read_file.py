@@ -33,7 +33,7 @@ def make_graph(adjacency_matrix):
     return graph
 
 def investigate_adjacency_matrix_properties(graph):
-    type = 'graph'
+    type = 'simple graph'
     directed = False
     matrix = graph["adjacency_matrix"]
 
@@ -47,18 +47,4 @@ def investigate_adjacency_matrix_properties(graph):
         "type": type,
         "directed": directed
     }
-'''
-file_path = 'example.txt'
-graph_data = read_graph_file(file_path)
-for i, graph in enumerate(graph_data):
-    print(f"Graph {i + 1}:")
-    print("Number of vertices:", graph["num_vertices"])
-    print("Adjacency Matrix:")
-    for row in graph["adjacency_matrix"]:
-        print(row)
-    print("Additional Data:", graph["additional_data"])
-    graph_type = investigate_adjacency_matrix_properties(graph)
-    print('Type of the graph: ', graph_type['type'])
-    print('Is directed: ',graph_type['directed'])
-    print()
-'''
+
