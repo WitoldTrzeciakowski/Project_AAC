@@ -30,7 +30,9 @@ def maximum_cycle_dfs_optimized(adjacency_matrix):
         visited = [False] * n 
         dfs(starting_point, starting_point, visited, [])
 
-    return [list(cycle) for cycle in paths]
+    return_list =  [list(cycle) for cycle in paths]
+    list_sanitized = sanitize_cycles(return_list)
+    return list_sanitized
 
 
 def sanitize_cycles(cycles):
@@ -47,7 +49,6 @@ def sanitize_cycles(cycles):
 
 def longest_cycle_length(adj_matrix):
     def matrix_mult(A, B):
-        """Multiplies two matrices A and B."""
         n = len(A)
         result = [[0] * n for _ in range(n)]
         for i in range(n):
@@ -56,9 +57,8 @@ def longest_cycle_length(adj_matrix):
         return result
 
     def matrix_power(A, k):
-        """Exponentiates matrix A to the power of k."""
         n = len(A)
-        result = [[1 if i == j else 0 for j in range(n)] for i in range(n)]  # Identity matrix
+        result = [[1 if i == j else 0 for j in range(n)] for i in range(n)]
         base = A
         while k > 0:
             if k % 2 == 1:
@@ -69,8 +69,6 @@ def longest_cycle_length(adj_matrix):
 
     n = len(adj_matrix)
     longest_cycle = 0
-
-    # Check powers from 1 to n
 
     power_matrix = matrix_power(adj_matrix, n)
     max_length_of_cycle = 0
