@@ -20,35 +20,38 @@ def add_edges_to_ensure_min_degree(adj_matrix, min_degree=2):
 
     return adj_matrix
 
-def is_hamiltonian_cycle(graph):
-    n = len(graph)
-    visited = [False] * n
-    path = []
-
-    # Start backtracking from vertex 0
-    def backtrack(v, path_length):
-        visited[v] = True
-        path.append(v)
-
-        if path_length == n:
-            # Check if there is an edge back to the starting vertex
-            if graph[v][path[0]] == 1:
-                return True
-            visited[v] = False
-            path.pop()
+def is_hamiltonian_cycle(adjacency_matrix):
+    vertices_count = len(adjacency_matrix)
+    
+    def is_safe_to_add(v, pos, path):
+        # Check if there is an edge from the last vertex in the path to v
+        if adjacency_matrix[path[pos - 1]][v] == 0:
             return False
+        # Check if v is already included in the path
+        if v in path:
+            return False
+        return True
 
-        for u in range(n):
-            if graph[v][u] == 1 and not visited[u]:
-                if backtrack(u, path_length + 1):
+    def hamiltonian_cycle_util(path, pos):
+        if pos == vertices_count:
+            # Check if there is an edge from the last vertex to the first vertex
+            return adjacency_matrix[path[pos - 1]][path[0]] == 1
+
+        for v in range(vertices_count):
+            if is_safe_to_add(v, pos, path):
+                path[pos] = v
+                if hamiltonian_cycle_util(path, pos + 1):
                     return True
+                path[pos] = -1  # Backtrack
 
-        # Backtrack
-        visited[v] = False
-        path.pop()
         return False
 
-    return backtrack(0, 1)
+    path = [-1] * vertices_count
+    path[0] = 0  # Start the path at vertex 0
+
+    if hamiltonian_cycle_util(path, 1):
+        return True
+    return False
 
 adj_matrix = [
     [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -74,11 +77,7 @@ def spectral_extension(graph):
     # Handle small graphs
     if size < 14:
         if size <= 4:
-            print("Not possible")
             return
-
-        print("Graph size in range 4 < n < 14. Applying spectral extension and theorem.")
-        print("Initial Graph:")
         for row in graph:
             print(row)
 
@@ -93,6 +92,7 @@ def spectral_extension(graph):
             iterations += 1
             graph = greedy_edge_addition(graph, 1)
             if iterations > size*size:
+                print("failure of spectral extension method")
                 break
 
         print("Graph After Spectral Extension:")
@@ -108,18 +108,16 @@ def spectral_extension(graph):
             print("Spectral radius condition not satisfied. Hamiltonian path not guaranteed.")
         return
     graph = add_edges_to_ensure_min_degree(graph)
-    for row in graph:
-        print (row)
     size = len(graph[1])
     exception_graph = generate_k2_join_kn4_plus_2k1(size)
     iterations=0
-    while (calculate_largest_eigenvalue(graph) < calculate_largest_eigenvalue(exception_graph) \
+    eginvalue_exceptiong_graph = calculate_largest_eigenvalue(exception_graph)
+    while (calculate_largest_eigenvalue(graph) < eginvalue_exceptiong_graph  \
             or is_k2_join_kn4_plus_2k1(graph)):
         iterations+=1
+        if iterations > size*size:
+            return None
         graph = greedy_edge_addition(graph,1)
-    for row in graph:
-        print (row)
-    print(iterations)
     return graph
 
 def check_spectral_theorems(graph):

@@ -2,6 +2,7 @@ import random
 import math
 
 def approximate_hamiltonian_cycles(adj_matrix, iterations=10000):
+    iterations = len(adj_matrix) * len(adj_matrix)
     n = len(adj_matrix) 
     hamiltonian_count = 0
 
@@ -23,13 +24,4 @@ def approximate_hamiltonian_cycles(adj_matrix, iterations=10000):
     return estimated_cycles
 
 
-adj_matrix = [
-    [0, 1, 1, 0, 0],  
-    [1, 0, 1, 1, 0],  
-    [1, 1, 0, 0, 1],  
-    [0, 1, 0, 0, 1],  
-    [0, 0, 1, 1, 0],  
-]
 
-estimated_cycles = approximate_hamiltonian_cycles(adj_matrix, iterations=100000)
-print(f"Przybliżona liczba cykli Hamiltona: {round(estimated_cycles)}")

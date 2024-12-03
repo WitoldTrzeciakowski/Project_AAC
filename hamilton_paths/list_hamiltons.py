@@ -25,16 +25,3 @@ def find_all_longest_cycles(adj_matrix):
     longest_cycles = [cycle for cycle in all_cycles if len(cycle) == max_length]
 
     return longest_cycles
-
-adj_matrix = [
-    [0, 1, 1, 0, 0],  
-    [1, 0, 1, 1, 0],  
-    [1, 1, 0, 0, 1],  
-    [0, 1, 0, 0, 1],  
-    [0, 0, 1, 1, 0],  
-]
-
-longest_cycles = find_all_longest_cycles(adj_matrix)
-print("Najdłuższe cykle:")
-for cycle in longest_cycles:
-    print(" -> ".join(map(str, cycle)))

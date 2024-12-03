@@ -20,7 +20,7 @@ def normalize_vector(v):
     norm = sum(x ** 2 for x in v) ** 0.5
     return [x / norm for x in v]
 
-def calculate_largest_eigenvalue(matrix, initial_guess=None, tolerance=1e-6, max_iter=1000):
+def calculate_largest_eigenvalue(matrix, initial_guess=None, tolerance=1e-6, max_iter=10):
     """ Computes the largest eigenvalue of a matrix using the power iteration method. """
     n = len(matrix)
     

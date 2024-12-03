@@ -104,10 +104,10 @@ def find_minimum_edges_to_hamiltonian(graph):
     max_edges_to_add = 1  
     graph_data = read_file.make_graph(graph) 
     informations_about_graph = read_file.investigate_adjacency_matrix_properties(graph_data) 
-    directed = informations_about_graph["directed"]
+    directed_inside = informations_about_graph["directed"]
     
     while True:
-        found, updated_graph = backtrack_to_add_edges(graph, max_edges_to_add, 0, directed)
+        found, updated_graph = backtrack_to_add_edges(graph, max_edges_to_add, 0, directed_inside)
         if found:
             return max_edges_to_add, updated_graph  
         max_edges_to_add += 1  

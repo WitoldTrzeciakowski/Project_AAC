@@ -67,25 +67,3 @@ def add_minimal_edges_by_dirac(adj_matrix, directed=False):
                         add_edge(adj_matrix, u, v, directed=False)
 
     return adj_matrix
-
-
-if __name__ == "__main__":
-    # Example Undirected Graph
-    adj_matrix_undirected = [
-        [0, 1, 0, 0, 0, 0, 0],
-        [1, 0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 1, 0, 0, 0],
-        [0, 0, 1, 0, 1, 0, 0],
-        [0, 0, 0, 1, 0, 1, 0],
-        [0, 0, 0, 0, 1, 0, 1],
-        [0, 0, 0, 0, 0, 1, 0],
-    ]
-
-    print("Initial Undirected Graph satisfies Dirac:", is_hamiltonian_by_dirac(adj_matrix_undirected, directed=False))
-    
-    updated_matrix_undirected = add_minimal_edges_by_dirac(adj_matrix_undirected, directed=False)
-    
-    print("Updated Undirected Graph satisfies Dirac:", is_hamiltonian_by_dirac(updated_matrix_undirected, directed=False))
-    print("Updated Undirected Adjacency Matrix:")
-    for row in updated_matrix_undirected:
-        print(row)
