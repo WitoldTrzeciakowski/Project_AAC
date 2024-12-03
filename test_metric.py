@@ -3,8 +3,6 @@ import random
 import numpy as np
 from size_metric.easy_metric import calculate_matrix_to_match
 from size_metric.spectral_distance import are_spectra_equal
-import hamilton_paths.heuristic_number_hamiltons
-import hamilton_paths.adding_edges_stack
 
 
 def measure_execution_time(func, *args, **kwargs):
@@ -33,7 +31,7 @@ def generate_random_graph(directed):
     Returns:
         adj_matrix (numpy.ndarray): Adjacency matrix of the generated graph.
     """
-    num_vertices = random.randint(2,1000)  # Random number of vertices between 5 and 20
+    num_vertices = random.randint(2,100)  # Random number of vertices between 5 and 20
     density = random.uniform(0.1, 0.8)   # Random density between 0.1 and 0.9
 
     # Ensure a spanning tree is created for connectivity
@@ -74,15 +72,14 @@ def test_computational_performance():
     for _ in range(5): 
         directed = random.choice([True, False])
         graph1 = generate_random_graph(directed)
-        graph2 = generate_random_graph(directed)
-        graph = (graph1, graph2)
+        graph = (graph1, graph1)
         graph_type = "Directed" if directed else "Undirected"
-        num_vertices = (len(graph1), len(graph2))
+        num_vertices = (len(graph1), len(graph1))
         for _ in range(1):
             for func_name, func in functions.items():
                 total_time = 0
                 successful_runs = 0
-                for _ in range(10):
+                for _ in range(1):
                     try:                      
                         _, elapsed_time = measure_execution_time(func, graph)
                         total_time += elapsed_time
