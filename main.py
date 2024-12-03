@@ -93,24 +93,28 @@ else:
 
 
 ############ Maximum cycle in a graph and the number of such cycles ###################
-
-#    print("------ Maximum cycles -------")
-#    print("NOTE: the heuristic solution is applicable only to the cyclic graphs. In case of the acyclic graphs, the results can be far from the exact ones")
-#    print("Exact solution using the DFS algorithm")
-#    paths = maximum_cycle.maximum_cycle_dfs_optimized(graph)
-#    print("Maximum cycle length:")
-#    if len(paths) == 0:
-#        print(0)
-#    else:
-#        print(len(paths[0]))
-#    print("Number of maximum cycles:")
-#    print(len(paths))
-#    print("Approximate solution with the use of matrix exponentiation:")
-#    max_length_heuristic, number_of_paths_heuristic = maximum_cycle.longest_cycle_length(graph)
-#    print("Maximum cycle length:")
-#    print(max_length_heuristic)
-#    print("Number of maximum cycles:")
-#    print(number_of_paths_heuristic)
+    print("------ Maximum cycles -------")
+    print("NOTE: the heuristic solution is applicable only to the cyclic graphs. In case of the acyclic graphs, the results can be far from the exact ones")
+    adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
+    for i in range(1, len(adjacency_matrices)+1):
+        matrix_graph = adjacency_matrices[f"M{i}"]
+        print(f"Graph M{i}")
+        print("Exact solution using the DFS algorithm")
+        paths = maximum_cycle.maximum_cycle_dfs_optimized(matrix_graph)
+        print("Maximum cycle length:")
+        if len(paths) == 0:
+            print(0)
+        else:
+            print(len(paths[0]))
+        print("Number of maximum cycles:")
+        print(len(paths))
+        print("Approximate solution with the use of matrix exponentiation:")
+        max_length_heuristic, number_of_paths_heuristic = maximum_cycle.longest_cycle_length(matrix_graph)
+        print("Maximum cycle length:")
+        print(max_length_heuristic)
+        print("Number of maximum cycles:")
+        print(number_of_paths_heuristic)
+        print('\n')
 
 
 
@@ -120,7 +124,7 @@ else:
 adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
 indeks = 1
 for adjecency_matrix in adjacency_matrices.values():
-    print(f"GRAF NUMER {indeks}")
+    print(f"GRAPH NUMBER {indeks}")
     indeks += 1
     
     print("Adjacency Matrix:")
