@@ -1,7 +1,7 @@
-import read_file
-import graph_size
-import easy_metric
-import spectral_distance
+import size_metric.read_file as read_file
+import size_metric.graph_size as graph_size
+import size_metric.easy_metric as easy_metric
+import size_metric.spectral_distance as spectral_distance
 import interface_hamilton_cycle
 import maximum_cycle
 #import Spectral_stuff.interface

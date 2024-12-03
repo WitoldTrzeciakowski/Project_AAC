@@ -1,6 +1,5 @@
-from matrix_det import determinant_of_matrix, eigenvalues_of_matrix
-from QR_algorithm import qr_algorithm
-from read_file import read_graph_file
+from size_metric.QR_algorithm import qr_algorithm
+from size_metric.read_file import read_graph_file
 
 def can_be_isomorphic(M1, M2):
     if len(M1) != len(M2): 

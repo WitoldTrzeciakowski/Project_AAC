@@ -1,8 +1,8 @@
 import time
 import random
 import numpy as np
-from easy_metric import calculate_matrix_to_match
-from spectral_distance import are_spectra_equal
+from size_metric.easy_metric import calculate_matrix_to_match
+from size_metric.spectral_distance import are_spectra_equal
 import hamilton_paths.heuristic_number_hamiltons
 import hamilton_paths.adding_edges_stack
 

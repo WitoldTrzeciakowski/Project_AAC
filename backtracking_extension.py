@@ -1,5 +1,5 @@
 
-import read_file  # Assuming you have a module to handle graph reading and analysis
+import size_metric.read_file as read_file  # Assuming you have a module to handle graph reading and analysis
 
 # Function to check if a graph has a Hamiltonian cycle
 def is_hamiltonian_cycle(graph):
