@@ -26,7 +26,7 @@ def measure_execution_time(func, *args, **kwargs):
     elapsed_time = time.perf_counter() - start_time
     return result, elapsed_time
 
-def generate_random_graph(directed=False):
+def generate_random_graph(directed=False, minVertices=5, maxVertices=20):
     """
     Generates a random directed or undirected connected graph as an adjacency matrix.
 
@@ -36,7 +36,7 @@ def generate_random_graph(directed=False):
     Returns:
         adj_matrix (numpy.ndarray): Adjacency matrix of the generated graph.
     """
-    num_vertices = 14  # Random number of vertices between 5 and 20
+    num_vertices = random.randint(minVertices, maxVertices)  # Random number of vertices between 5 and 20
     density = random.uniform(0.1, 0.8)   # Random density between 0.1 and 0.9
 
     # Ensure a spanning tree is created for connectivity
@@ -63,20 +63,7 @@ def generate_random_graph(directed=False):
 
     return adj_matrix
 
-def test_computational_performance():
-    # Functions to test
-    functions = {
-        "Dirac Theorem": lambda g: Solution_proporsals.DiracTheoremSolution.is_hamiltonian_by_dirac(g, directed=False),
-        "Spectral Theorem Check": Spectral_stuff.interface.check_spectral_theorems,
-        "Backtracking Hamiltonian Check": Spectral_stuff.interface.is_hamiltonian_cycle,
-        "Find All Hamilton Cycles": maximum_cycle.maximum_cycle_dfs_optimized,
-        "Union Find":               UnionFind.find_minimal_extension_to_hamiltonian_cycle,  
-        "Approximate Hamiltonian Cycles": hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles,
-        "Minimal Edges by Dirac": lambda g: Solution_proporsals.DiracTheoremSolution.add_minimal_edges_by_dirac(g, directed=False),
-        "Spectral Extension": Spectral_stuff.interface.spectral_extension,
-        "Greedy Hamiltonian Extension": hamilton_paths.adding_edges_stack.hamiltonian_extension_matrix,
-        "Exact Backtracking for Extensions": backtracking_extension.find_minimum_edges_to_hamiltonian,
-    }
+def test_computational_performance(functions={}, minVertices=5, maxVertices=20):
 
     num_iterations = 1000
     print(f"{'Function':<40} {'Graph Type':<20} {'Vertices':<10} {'Avg Time (s)':<15}")
@@ -84,7 +71,7 @@ def test_computational_performance():
 
     for _ in range(20): 
         directed = random.choice([True, False])
-        graph = generate_random_graph(directed)
+        graph = generate_random_graph(directed, minVertices, maxVertices)
         graph_type = "Directed" if directed else "Undirected"
         num_vertices = len(graph)
         for _ in range(1):
@@ -113,4 +100,16 @@ def test_computational_performance():
         print("\nNEXT GRAPH\n")
 
 if __name__ == "__main__":
-    test_computational_performance()
+    hamilton_functions = {
+        "Dirac Theorem": lambda g: Solution_proporsals.DiracTheoremSolution.is_hamiltonian_by_dirac(g, directed=False),
+        "Spectral Theorem Check": Spectral_stuff.interface.check_spectral_theorems,
+        "Backtracking Hamiltonian Check": Spectral_stuff.interface.is_hamiltonian_cycle,
+        "Find All Hamilton Cycles": maximum_cycle.maximum_cycle_dfs_optimized,
+        "Union Find":               UnionFind.find_minimal_extension_to_hamiltonian_cycle,  
+        "Approximate Hamiltonian Cycles": hamilton_paths.heuristic_number_hamiltons.approximate_hamiltonian_cycles,
+        "Minimal Edges by Dirac": lambda g: Solution_proporsals.DiracTheoremSolution.add_minimal_edges_by_dirac(g, directed=False),
+        "Spectral Extension": Spectral_stuff.interface.spectral_extension,
+        "Greedy Hamiltonian Extension": hamilton_paths.adding_edges_stack.hamiltonian_extension_matrix,
+        "Exact Backtracking for Extensions": backtracking_extension.find_minimum_edges_to_hamiltonian,
+    }
+    test_computational_performance(hamilton_functions, 14, 14)
