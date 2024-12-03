@@ -31,12 +31,12 @@ graph_data = read_file.read_graph_file(file_path)
 
 ####################### SIZE OF THE GRAPH ##########################
 
-print("     Size of the graph\n")
+print("     SIZE OF THE GRAPH \n")
 print("Number of edges and number of verices \n")
 print("NOTE:: One undirected edge is counted as two directed edges ")
 
 for i, graph in enumerate(graph_data):
-    print(f"Size of Graph {i + 1}:")
+    print(f"Size of Graph G{i + 1}:")
     for row in graph["adjacency_matrix"]:
         print(row)
     num_edges, num_vertices = graph_size.count_edges_vertices(graph)
@@ -47,7 +47,7 @@ for i, graph in enumerate(graph_data):
 
 ############## RESONABLE METRIC #############################
 
-print("     Reasonable Metric - Matrix comparision \n")
+print("     REASONABLE METRIC - MATRIX COMPARISION \n")
 print("Number of operation that need to be done for matrix representing the graph to be the same")
 print("NOTE:: In this metric we count one undirected edge as two directed edges for making the metric working for all types of graphs \n")
 
@@ -76,7 +76,7 @@ else:
         print()
 
 
-print("     Reasonable Metric - Spectra \n")
+print("     REASONABLE METRIC - SPECTRA \n")
 print("Isomorphic graphs have the same spectral distance, \nHowever when the spectra are the same it doesn't mean taht the graphs are isomorphic and more calucaltions needs to be done \n")
 
 if len(adjacency_matrices) < 2:
@@ -87,44 +87,39 @@ else:
     for y in range(1,len(adjacency_matrices) + 1):
         matrix2 = adjacency_matrices[f"M{y}"]
         if spectral_distance.are_spectra_equal(matrix1, matrix2):
-            print(f"Graph M{x} and Graph M{y} may be isomorphic (spectra match).")
+            print(f"Graph G{x} and Graph G{y} may be isomorphic (spectra match).")
         else:
-            print(f"Graph M{x} and Graph M{y} are not isomorphic (spectra differ).")
+            print(f"Graph G{x} and Graph G{y} are not isomorphic (spectra differ).")
 
 
 ############ Maximum cycle in a graph and the number of such cycles ###################
-    print("------ Maximum cycles -------")
-    print("NOTE: the heuristic solution is applicable only to the cyclic graphs. In case of the acyclic graphs, the results can be far from the exact ones")
+    print("\n       MAXIMUM CYCLE \n ")
+    print("NOTE:: the heuristic solution is applicable only to the cyclic graphs. In case of the acyclic graphs, the results can be far from the exact ones")
     adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
     for i in range(1, len(adjacency_matrices)+1):
         matrix_graph = adjacency_matrices[f"M{i}"]
-        print(f"Graph M{i}")
+        print()
+        print(f"  Graph G{i}")
+
         print("Exact solution using the DFS algorithm")
         paths = maximum_cycle.maximum_cycle_dfs_optimized(matrix_graph)
-        print("Maximum cycle length:")
-        if len(paths) == 0:
-            print(0)
-        else:
-            print(len(paths[0]))
-        print("Number of maximum cycles:")
-        print(len(paths))
-        print("Approximate solution with the use of matrix exponentiation:")
+        print("Maximum cycle length:", len(paths[0]) if paths else 0)
+        print("Number of maximum cycles:", len(paths))
+
+        print("\nApproximate solution with the use of matrix exponentiation:")
         max_length_heuristic, number_of_paths_heuristic = maximum_cycle.longest_cycle_length(matrix_graph)
-        print("Maximum cycle length:")
-        print(max_length_heuristic)
-        print("Number of maximum cycles:")
-        print(number_of_paths_heuristic)
-        print('\n')
+        print("Maximum cycle length:", max_length_heuristic)
+        print("Number of maximum cycles:", number_of_paths_heuristic)
 
 
 
 ############ Hamilton Paths and cycles #############
 
-
+print("\n\n       HAMILTON CYCLE \n ")
 adjacency_matrices = {f"M{i+1}": data['adjacency_matrix'] for i, data in enumerate(graph_data)}
 indeks = 1
 for adjecency_matrix in adjacency_matrices.values():
-    print(f"GRAPH NUMBER {indeks}")
+    print(f"   Graph G{indeks}")
     indeks += 1
     
     print("Adjacency Matrix:")

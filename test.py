@@ -40,5 +40,5 @@ if __name__ == "__main__":
     print(undirected_graph)
 
     print("\nLosowy graf skierowany:")
-    directed_graph = generate_random_graph()
+    directed_graph = generate_random_graph(directed = True)
     print(directed_graph)
