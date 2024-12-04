@@ -1,3 +1,5 @@
+import size_metric.read_file
+
 def maximum_cycle_dfs_optimized(adjacency_matrix):
     paths = set()
     maximum_path_length = 0
@@ -69,23 +71,20 @@ def longest_cycle_length(adj_matrix):
 
     n = len(adj_matrix)
     longest_cycle = 0
-
-    power_matrix = matrix_power(adj_matrix, n)
-    max_length_of_cycle = 0
     number_of_cycles = 0
-    for i in range(n):
-        if power_matrix[i][i] > 0:
-            if max_length_of_cycle < power_matrix[i][i]:
-                number_of_cycles = 1
-                max_length_of_cycle = power_matrix[i][i]
-            if max_length_of_cycle == power_matrix[i][i]:
-                number_of_cycles+=1
+    matrix_properties = size_metric.read_file.investigate_adjacency_matrix_properties({
+        "adjacency_matrix": adj_matrix
+    })
+    divider = 1
+    if matrix_properties["directed"] == False:
+        divider = 2
 
     for k in range(1, n+1):
         power_matrix = matrix_power(adj_matrix, k)
-        total_cycles = sum(power_matrix[i][i] for i in range(len(adj_matrix)))
-        total_cycles //=(2*k)
+        total_cycles = sum(1 for i in range(n) if power_matrix[i][i] > 0)
+        total_cycles //= divider
         if total_cycles > 0:
+            number_of_cycles = total_cycles
             longest_cycle = k
 
     return longest_cycle, number_of_cycles
