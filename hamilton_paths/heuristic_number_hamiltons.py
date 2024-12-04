@@ -21,7 +21,7 @@ def approximate_hamiltonian_cycles(adj_matrix, iterations=10000):
     total_possible_permutations = math.factorial(n)
     estimated_cycles = (hamiltonian_count / iterations) * total_possible_permutations
 
-    return estimated_cycles
+    return estimated_cycles/(n*2)
 
 
 
