@@ -54,16 +54,51 @@ def add_minimal_edges_by_dirac(adj_matrix, directed=False):
     n = len(adj_matrix)
     if n < 3:
         return adj_matrix  # Dirac's theorem doesn't apply
+    
+    # Initialize degree dictionary
+    if directed:
+        # For directed graphs, store (out-degree, in-degree)
+        degrees = {i: (0, 0) for i in range(n)}
+        for u in range(n):
+            for v in range(n):
+                if adj_matrix[u][v] == 1:
+                    degrees[u] = (degrees[u][0] + 1, degrees[u][1])  # Increment out-degree of u
+                    degrees[v] = (degrees[v][0], degrees[v][1] + 1)  # Increment in-degree of v
+    else:
+        # For undirected graphs, store just the degree
+        degrees = {i: 0 for i in range(n)}
+        for u in range(n):
+            for v in range(n):
+                if adj_matrix[u][v] == 1:
+                    degrees[u] += 1
+                    degrees[v] += 1
 
+    def add_edge(adj_matrix, u, v, directed=False):
+        """
+        Adds an edge between vertices u and v.
+        Updates the adjacency matrix and degree dictionary.
+        """
+        if directed:
+            adj_matrix[u][v] = 1
+            degrees[u] = (degrees[u][0] + 1, degrees[u][1])  # Increment out-degree of u
+            degrees[v] = (degrees[v][0], degrees[v][1] + 1)  # Increment in-degree of v
+        else:
+            adj_matrix[u][v] = 1
+            adj_matrix[v][u] = 1
+            degrees[u] += 1
+            degrees[v] += 1
+
+    # Check and add edges to satisfy Dirac's theorem
     for u in range(n):
         for v in range(n):
             if u != v and adj_matrix[u][v] == 0:  # No edge between u and v
                 if directed:
-                    out_deg, in_deg = degree(adj_matrix, u, directed=True)
-                    if out_deg < n / 2 or degree(adj_matrix, v, directed=True)[1] < n / 2:
+                    out_deg_u, in_deg_u = degrees[u]
+                    out_deg_v, in_deg_v = degrees[v]
+                    if out_deg_u < n / 2 or in_deg_v < n / 2:
                         add_edge(adj_matrix, u, v, directed=True)
                 else:
-                    if degree(adj_matrix, u, directed=False) < n / 2 or degree(adj_matrix, v, directed=False) < n / 2:
+                    if degrees[u] < n / 2 or degrees[v] < n / 2:
                         add_edge(adj_matrix, u, v, directed=False)
 
     return adj_matrix
