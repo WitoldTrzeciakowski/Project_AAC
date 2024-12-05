@@ -37,9 +37,10 @@ print("NOTE:: One undirected edge is counted as two directed edges ")
 
 for i, graph in enumerate(graph_data):
     print(f"Size of Graph G{i + 1}:")
-    for row in graph["adjacency_matrix"]:
+    adjacency_matrix = graph["adjacency_matrix"]
+    for row in adjacency_matrix:
         print(row)
-    num_edges, num_vertices = graph_size.count_edges_vertices(graph)
+    num_edges, num_vertices = graph_size.size_of_the_graph(adjacency_matrix)
     print("Number of vertices:", num_vertices)
     print("Number of edges:", num_edges)
     print()

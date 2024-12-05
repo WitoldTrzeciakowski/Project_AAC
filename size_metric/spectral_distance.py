@@ -1,5 +1,4 @@
 from size_metric.QR_algorithm import qr_algorithm
-from size_metric.read_file import read_graph_file
 
 def can_be_isomorphic(M1, M2):
     if len(M1) != len(M2): 

@@ -5,9 +5,7 @@ def is_M_symetrical(M):
                 return False
     return True
 
-def count_edges_vertices(graph):
-    num_vertices = graph["num_vertices"]
-    adjacency_matrix = graph["adjacency_matrix"]
-    num_edges = int(sum(sum(row) for row in adjacency_matrix))
-    
-    return num_edges, num_vertices
+def size_of_the_graph(matrix):
+        num_vertices = len(matrix)
+        num_edges = int(sum(sum(row) for row in matrix))
+        return num_edges, num_vertices
