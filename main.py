@@ -102,16 +102,17 @@ else:
         print()
         print(f"  Graph G{i}")
 
-        print("Exact solution using the DFS algorithm")
-        paths = maximum_cycle.maximum_cycle_dfs_optimized(matrix_graph)
-        print("Maximum cycle length:", len(paths[0]) if paths else 0)
-        print("Number of maximum cycles:", len(paths))
+        if input("Do you want to perform the exact solution with the DFS algorithm? y/n") == "y":
+            print("Exact solution using the DFS algorithm")
+            paths = maximum_cycle.maximum_cycle_dfs_optimized(matrix_graph)
+            print("Maximum cycle length:", len(paths[0]) if paths else 0)
+            print("Number of maximum cycles:", len(paths))
 
-        print("\nApproximate solution with the use of matrix exponentiation:")
-        max_length_heuristic, number_of_paths_heuristic = maximum_cycle.longest_cycle_length(matrix_graph)
-        print("Maximum cycle length:", max_length_heuristic)
-        print("Number of maximum cycles:", number_of_paths_heuristic)
-
+        if input("Do you want to perform the heuristic solution with the use of matrix exponentiation? y/n") == "y":
+            print("\nApproximate solution with the use of matrix exponentiation:")
+            max_length_heuristic, number_of_paths_heuristic = maximum_cycle.longest_cycle_length(matrix_graph)
+            print("Maximum cycle length:", max_length_heuristic)
+            print("Number of maximum cycles:", number_of_paths_heuristic)
 
 
 ############ Hamilton Paths and cycles #############
