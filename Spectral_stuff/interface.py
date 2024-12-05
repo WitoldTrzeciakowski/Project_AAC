@@ -78,8 +78,6 @@ def spectral_extension(graph):
     if size < 14:
         if size <= 4:
             return
-        for row in graph:
-            print(row)
 
         graph = add_edges_to_ensure_min_degree(graph)
         exception = identify_graph(graph)
@@ -94,8 +92,6 @@ def spectral_extension(graph):
             if iterations > size*size:
                 print("failure of spectral extension method")
                 break
-
-        print("Graph After Spectral Extension:")
 
         print(f"Iterations: {iterations}")
         if calculate_largest_eigenvalue(graph) > size - 3:
