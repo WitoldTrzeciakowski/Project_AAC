@@ -127,7 +127,8 @@ for adjecency_matrix in adjacency_matrices.values():
     for row in adjecency_matrix:
         print(row)
     directed = read_file.investigate_adjacency_matrix_properties(graph)["directed"]
+    temp = read_file.prepare_adjacency_matrix_for_hamiltonian_path(adjecency_matrix)
     print(f"is the graph directed: {directed}")
-    interface_hamilton_cycle.do_check_on_graph(adjecency_matrix, directed)
-input("Press any key to continue")
+    interface_hamilton_cycle.do_check_on_graph(temp, directed)
+input("Press enter to continue")
 

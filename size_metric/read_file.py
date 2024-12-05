@@ -48,3 +48,12 @@ def investigate_adjacency_matrix_properties(graph):
         "directed": directed
     }
 
+def prepare_adjacency_matrix_for_hamiltonian_path(adj_matrix):
+    n = len(adj_matrix)
+    
+    for i in range(n):
+        for j in range(n):
+            adj_matrix[i][j] = 1 if adj_matrix[i][j] > 0 else 0
+        adj_matrix[i][i] = 0
+
+    return adj_matrix
