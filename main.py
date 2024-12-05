@@ -129,5 +129,5 @@ for adjecency_matrix in adjacency_matrices.values():
     directed = read_file.investigate_adjacency_matrix_properties(graph)["directed"]
     print(f"is the graph directed: {directed}")
     interface_hamilton_cycle.do_check_on_graph(adjecency_matrix, directed)
-
+input("Press any key to continue")
 
