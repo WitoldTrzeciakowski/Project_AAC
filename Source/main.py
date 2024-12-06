@@ -61,19 +61,20 @@ else:
     matrix1 = adjacency_matrices[f"M{x}"]
     for y in range(1, len(adjacency_matrices) + 1):
 
-        matrix2 = adjacency_matrices[f"M{y}"]
-        max_rows = max(len(matrix1), len(matrix2))
-        
-        print(f"Comparing Graph{x} and Graph{y}: \n")
-        for i in range(max_rows):
-            row1 = matrix1[i] if i < len(matrix1) else " " * len(str(matrix1[0]))
-            row2 = matrix2[i] if i < len(matrix2) else " " * len(str(matrix2[0])) 
-            print(f"{row1}      {row2}")
+        if input(f"Do you want to perform the matrix comparison method for graphs G{x} and G{y}? y/n") == "y":
+            matrix2 = adjacency_matrices[f"M{y}"]
+            max_rows = max(len(matrix1), len(matrix2))
+            
+            print(f"Comparing Graph{x} and Graph{y}: \n")
+            for i in range(max_rows):
+                row1 = matrix1[i] if i < len(matrix1) else " " * len(str(matrix1[0]))
+                row2 = matrix2[i] if i < len(matrix2) else " " * len(str(matrix2[0])) 
+                print(f"{row1}      {row2}")
 
-        M3, EV_num = easy_metric.calculate_matrix_to_match(matrix1, matrix2)
-        print(f"The number of edges that we need to add or delete: {EV_num[0]}")
-        print(f"The number of vertices that we need to add or delete: {EV_num[1]}")
-        print()
+            M3, EV_num = easy_metric.calculate_matrix_to_match(matrix1, matrix2)
+            print(f"The number of edges that we need to add or delete: {EV_num[0]}")
+            print(f"The number of vertices that we need to add or delete: {EV_num[1]}")
+            print()
 
 
 print("     REASONABLE METRIC - SPECTRA \n")
@@ -86,10 +87,11 @@ else:
     matrix1 = adjacency_matrices[f"M{x}"]
     for y in range(1,len(adjacency_matrices) + 1):
         matrix2 = adjacency_matrices[f"M{y}"]
-        if spectral_distance.are_spectra_equal(matrix1, matrix2):
-            print(f"Graph G{x} and Graph G{y} may be isomorphic (spectra match).")
-        else:
-            print(f"Graph G{x} and Graph G{y} are not isomorphic (spectra differ).")
+        if input(f"Do you want to perform the spectral distance method for graphs G{x} and G{y}? y/n") == "y":
+            if spectral_distance.are_spectra_equal(matrix1, matrix2):
+                print(f"Graph G{x} and Graph G{y} may be isomorphic (spectra match).")
+            else:
+                print(f"Graph G{x} and Graph G{y} are not isomorphic (spectra differ).")
 
 
 ############ Maximum cycle in a graph and the number of such cycles ###################
