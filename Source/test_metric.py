@@ -4,7 +4,6 @@ import numpy as np
 from size_metric.easy_metric import calculate_matrix_to_match
 from size_metric.spectral_distance import are_spectra_equal
 
-
 def measure_execution_time(func, *args, **kwargs):
     """
     Measures the execution time of a function.
@@ -21,7 +20,7 @@ def measure_execution_time(func, *args, **kwargs):
     elapsed_time = time.perf_counter() - start_time
     return result, elapsed_time
 
-def generate_random_graph(directed):
+def generate_random_graph(directed, num_vertices):
     """
     Generates a random directed or undirected connected graph as an adjacency matrix.
 
@@ -31,7 +30,7 @@ def generate_random_graph(directed):
     Returns:
         adj_matrix (numpy.ndarray): Adjacency matrix of the generated graph.
     """
-    num_vertices = random.randint(2,100)  # Random number of vertices between 5 and 20
+    #num_vertices = random.randint(2,100)  # Random number of vertices between 5 and 20
     density = random.uniform(0.1, 0.8)   # Random density between 0.1 and 0.9
 
     # Ensure a spanning tree is created for connectivity
@@ -65,37 +64,38 @@ def test_computational_performance():
         "Spectra Equality": lambda g: are_spectra_equal(g[0], g[1]),
     }
 
+    results = {func_name: {} for func_name in functions.keys()}
     num_iterations = 100
-    print(f"{'Function':<40} {'Graph Type':<20} {'Vertices':<18} {'Avg Time (s)':<15}")
-    print("-" * 100)
+    num_vertices_list = [5, 10, 15, 20]
 
-    for _ in range(5): 
+    for num_vertices in num_vertices_list:
         directed = random.choice([True, False])
-        graph1 = generate_random_graph(directed)
-        graph = (graph1, graph1)
-        graph_type = "Directed" if directed else "Undirected"
-        num_vertices = (len(graph1), len(graph1))
-        for _ in range(1):
-            for func_name, func in functions.items():
-                total_time = 0
-                successful_runs = 0
-                for _ in range(1):
-                    try:                      
-                        _, elapsed_time = measure_execution_time(func, graph)
-                        total_time += elapsed_time
-                        successful_runs += 1
-                    except Exception as e:
-                        print(f"Error in {func_name}: {str(e)}")
-                
-                if successful_runs > 0:
-                    avg_time = total_time / successful_runs
-                else:
-                    avg_time = float('inf')  # Indicate failure for all runs
+        for func_name, func in functions.items():
+            total_time = 0
+            successful_runs = 0
+            for _ in range(1):
+                try:
+                    # Generate random graph of a specific size
+                    graph1 = generate_random_graph(directed, num_vertices)
+                    graph = (graph1, graph1)
 
-                print(f"{func_name:<40} {graph_type:<20} {num_vertices[0]}-{num_vertices[1]:<15} {avg_time:<15.6f}")
+                    _, elapsed_time = measure_execution_time(func, graph)
+                    total_time += elapsed_time
+                    successful_runs += 1
+                except Exception as e:
+                    print(f"Error in {func_name}: {str(e)}")
+            
+            if successful_runs > 0:
+                avg_time = total_time / successful_runs
+            else:
+                avg_time = float('inf')  # Indicate failure for all runs
 
-        print("")
-        #print("\nNEXT GRAPH\n")
+            results[func_name][num_vertices] = avg_time
 
-if __name__ == "__main__":
-    test_computational_performance()
+    return results
+
+
+# if __name__ == "__main__":
+#     performance_results = test_computational_performance()
+#     print(performance_results)
+#     avg_time_visualization(performance_results)
